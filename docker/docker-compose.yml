@@ -1,0 +1,23 @@
+name: FiberVault
+
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_DB: fibervault
+      POSTGRES_USER: fibervault
+      POSTGRES_PASSWORD: fibervault_pw_change
+      TZ: Europe/Vilnius
+    ports:
+      - "5433:5432"
+    volumes:
+      - fibervault_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fibervault -d fibervault"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+
+volumes:
+  fibervault_pgdata:
