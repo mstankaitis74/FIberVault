@@ -21,7 +21,7 @@ public sealed class NodesController : ControllerBase
 
     [HttpPost]
     [Produces("application/json")]
-    public async Task<ActionResult<NodeResponse>> Create(CreateNodeRequest request)
+    public async Task<ActionResult<NodeResponse>> Create([FromBody] CreateNodeRequest request)
     {
         var point = new Point(request.Longitude, request.Latitude)
         {

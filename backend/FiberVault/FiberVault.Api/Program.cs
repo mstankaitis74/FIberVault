@@ -5,7 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.OperationFilter<FiberVault.Api.Swagger.NodesPostExamplesFilter>();
+    c.OperationFilter<FiberVault.Api.Swagger.CablesPostExamplesFilter>();
+});
 
 var cs = builder.Configuration.GetConnectionString("Db")
          ?? throw new InvalidOperationException("Missing ConnectionStrings:Db");

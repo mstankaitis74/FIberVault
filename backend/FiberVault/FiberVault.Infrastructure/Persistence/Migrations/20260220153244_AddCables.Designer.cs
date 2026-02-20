@@ -3,6 +3,7 @@ using System;
 using FiberVault.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiberVault.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(FiberVaultDbContext))]
-    partial class FiberVaultDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260220153244_AddCables")]
+    partial class AddCables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,53 +61,6 @@ namespace FiberVault.Infrastructure.Persistence.Migrations
                     b.ToTable("Cables");
                 });
 
-            modelBuilder.Entity("FiberVault.Domain.Entities.CableType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("FiberCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("CableTypes");
-                });
-
-            modelBuilder.Entity("FiberVault.Domain.Entities.Fiber", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CableId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CableId", "Number")
-                        .IsUnique();
-
-                    b.ToTable("Fibers");
-                });
-
             modelBuilder.Entity("FiberVault.Domain.Entities.Node", b =>
                 {
                     b.Property<Guid>("Id")
@@ -141,15 +97,6 @@ namespace FiberVault.Infrastructure.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("ToNodeId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FiberVault.Domain.Entities.Fiber", b =>
-                {
-                    b.HasOne("FiberVault.Domain.Entities.Cable", null)
-                        .WithMany()
-                        .HasForeignKey("CableId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
